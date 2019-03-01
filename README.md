@@ -22,13 +22,13 @@ func main() {
 	} else {
 		args = os.Args[1:]
 	}
-	err := commander.Exec(commander.M{
+	err := cmd.Exec(args, cmd.DefaultHelper, cmd.M{
 		"foo":      foo,
 		"version":  ver,
-	}, args)
+	})
 	if err != nil {
 		switch v := err.(type) {
-		case commander.Error:
+		case cmd.Error:
 			fmt.Print(v.Help())
 			os.Exit(2)
 		default:
@@ -44,7 +44,7 @@ func ver(name string, args []string) error {
 }
 
 func foo(name string, args []string) error {
-	return commander.Exec(commander.M{
+	return cmd.Exec(args, cmd.DefaultHelper, cmd.M{
 		"bar": func(name string, args []string) error {
 			var i int
 			set := flag.NewFlagSet(name, flag.ExitOnError)
@@ -55,6 +55,6 @@ func foo(name string, args []string) error {
 			fmt.Printf("foo bar %d\n", i)
 			return nil
 		},
-	}, args)
+	})
 }
 ```
